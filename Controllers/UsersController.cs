@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using taskmvc.Models;
 using taskmvc.Models.Data;
+using System;
+using System.Linq;
 
 namespace taskmvc.Controllers
 {
@@ -13,7 +15,6 @@ namespace taskmvc.Controllers
             _context = context;
         }
 
-       
         public IActionResult Register()
         {
             return View();
@@ -52,8 +53,9 @@ namespace taskmvc.Controllers
 
         public IActionResult Index()
         {
-            var users = _context.Users.ToList();
-            return View(users);
+          
+            var activeUsers = _context.Users.Where(u => u.IsActive).ToList();
+            return View(activeUsers);
         }
 
         public IActionResult ToggleActive(Guid id)
@@ -61,7 +63,16 @@ namespace taskmvc.Controllers
             var user = _context.Users.Find(id);
             if (user != null)
             {
-                user.IsActive = !user.IsActive;
+                
+                if (!user.IsActive)
+                {
+                    _context.Users.Remove(user);
+                }
+                else
+                {
+                    
+                    user.IsActive = false;
+                }
                 _context.SaveChanges();
             }
             return RedirectToAction("Index");
