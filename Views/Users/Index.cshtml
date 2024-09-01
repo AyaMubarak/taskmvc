@@ -1,7 +1,7 @@
-﻿@model IEnumerable<taskmvc.Models.User>
+@model IEnumerable<taskmvc.Models.User>
 
 @{
-    ViewData["Title"] = "Users List";
+    ViewData["Title"] = "Active Users";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -9,18 +9,10 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().IsActive)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().UserName)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Password)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().CreatedAt)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().IsActive)</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -32,18 +24,11 @@
                 <td>@user.Password</td>
                 <td>@user.CreatedAt.ToString("yyyy-MM-dd")</td>
                 <td>
-                    @if (user.IsActive)
-                    {
-                        <span>Active</span>
-                    }
-                    else
-                    {
-                        <span>Inactive</span>
-                    }
+                    <span>@(user.IsActive ? "True" : "False")</span>
                 </td>
                 <td>
-                    <a href="@Url.Action("ToggleActive", "Users", new { id = user.UserId })" class="btn btn-dark">
-                        @(user.IsActive ? "Deactivate" : "Activate")
+                    <a href="@Url.Action("ToggleActive", "Users", new { id = user.UserId })" class="btn btn-success">
+                       IsActive
                     </a>
                 </td>
             </tr>
